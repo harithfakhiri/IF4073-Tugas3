@@ -1,0 +1,12 @@
+
+I = imread('img/burung.bmp');
+figure, imshow(I);
+% J = processing_convo(double(I), double(H));
+J = laplace(I);
+Jlog = log_edge(I);
+%figure, imshow(J);
+%figure, imshow(Jlog), title ('Hasil deteksi tepi dengan LoG');
+
+prew = prewitt(I);
+
+%figure, imshow(uint8(prew)), title ('Hasil deteksi tepi dengan prewitt');
