@@ -1,12 +1,33 @@
 
-I = imread('img/burung.bmp');
+I = imread('img/buah2.png');
 figure, imshow(I);
 % J = processing_convo(double(I), double(H));
 J = laplace(I);
 Jlog = log_edge(I);
-%figure, imshow(J);
-%figure, imshow(Jlog), title ('Hasil deteksi tepi dengan LoG');
-
 prew = prewitt(I);
+prewi = uint8(prew);
 
-%figure, imshow(uint8(prew)), title ('Hasil deteksi tepi dengan prewitt');
+figure, imshow(prewi), title ('Hasil deteksi tepi dengan prewitt');
+closed_image = imclose(prewi,strel('line',10,0));
+%figure, imshow(closed_image);
+
+% Fill inside the edges
+filled_image = imfill(closed_image, 'holes');
+%figure, imshow(filled_image);
+
+
+% Remove small objects
+opened_image = imopen(closed_image, strel(ones(3,3)));
+figure, imshow(opened_image);
+mask_image = bwareaopen(opened_image,1500);
+%figure, imshow(uint8(mask_image));
+
+red_processed = I(:,:,1).*uint8(mask_image);
+green_processed = I(:,:,2).*uint8(mask_image);
+blue_processed = I(:,:,3).*uint8(mask_image);
+segmented_image = cat(3, red_processed, green_processed, blue_processed);
+figure, imshow(segmented_image), title ('Hasil segmented image dengan prewitt');
+
+
+can_edged = canny(I);
+%figure, imshow(can_edged), title ('Hasil deteksi tepi dengan canny');
