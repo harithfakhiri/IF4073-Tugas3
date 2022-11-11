@@ -1,0 +1,72 @@
+clc
+clear all
+close all
+%{
+a=imread('./img/1.jpg');
+subplot(2,2,1);
+imshow(a);
+title('Original Input Image');
+w1= [-1 -2 -1;0 0 0;1 2 1];
+w2= [-1 0 1;-2 0 2;-1 0 1];
+[row col]=size(a);
+for x=2:1:row-1
+ for y=2:1:col-1
+ a1(x,y)=w1(1)*a(x-1,y-1)+w1(2)*a(x-1,y)+w1(3)*...
+ a(x-1,y+1)+w1(4)*a(x,y-1)+w1(5)*a(x,y)+w1(6)*...
+ a(x,y+1)+w1(7)*a(x+1,y-1)+w1(8)*a(x+1,y)+w1(9)*...
+ a(x+1,y+1);
+ a2(x,y)=w2(1)*a(x-1,y-1)+w2(2)*a(x-1,y)+w2(3)*...
+ a(x-1,y+1)+w2(4)*a(x,y-1)+w2(5)*a(x,y)+w2(6)*...
+ a(x,y+1)+w2(7)*a(x+1,y-1)+w2(8)*a(x+1,y)+w2(9)*...
+ a(x+1,y+1);
+ end
+end
+subplot(2,2,2);
+imshow(a1);
+title('Edge Detection in y direction');
+subplot(2,2,3);
+imshow(a2);
+title('Edge Detection in x direction'); 
+output=a1+a2;
+subplot(2,2,4);
+imshow(output);
+title('Edge Detection');
+%}
+
+I1 = imread('./img/1.jpg');
+I1 = im2gray(I1);
+figure(, imshow(I1);
+k = 1;
+I2 = padarray(I1, [k k], 'replicate');
+[m n] = size(I1);
+sobel_math = [1 0; 0 -1];
+sobel_matv= [0 1; -1 0];
+
+%{
+for i = 2 : (m - 1)
+    for j = 2 : (n - 1)
+        v = double(I2(i - 1 : i + 1, j - 1 : j + 1)) .* sobel_math;
+        r = sum(v(:));
+        c(i-1, j-1) = uint8(ceil(r));
+    end
+end
+
+for i=2 : (m-1)
+    for j=2 : (n-1)
+        v1 = double(I2(i - 1 : i + 1, j - 1 : j + 1)) .* sobel_matv;
+        r1 = sum(v1(:));
+        c1(i-1, j-1) = uint8(ceil(r1));
+    end
+end
+
+%}
+c = conv2(double(I2), double(sobel_math), 'same');
+c1 = conv2(double(I2), double(sobel_matv), 'same');
+
+c2 = sqrt(c.^2 + c1.^2);
+
+figure(2), imshow(uint8(c));
+figure(3), imshow(uint8(c1));
+figure(4), imshow(uint8(c2));
+
+
