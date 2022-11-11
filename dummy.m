@@ -10,8 +10,8 @@ prewi = uint8(prew);
 can_edged = canny(I);
 
 figure, imshow(J), title ('Hasil deteksi tepi dengan prewitt');
-segmentation(I, can_edged, "canny");
+segment = segmentation(I, can_edged, "canny");
 
 
 can_edged = canny(I);
-%figure, imshow(can_edged), title ('Hasil deteksi tepi dengan canny');
+figure, imshow(segment), title ('Hasil deteksi tepi dengan canny');

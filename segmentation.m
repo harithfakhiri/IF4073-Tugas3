@@ -18,6 +18,5 @@ function  segmented  = segmentation(img, edge_img, type)
     green_processed = img(:,:,2).*uint8(mask_image);
     blue_processed = img(:,:,3).*uint8(mask_image);
     segmented = cat(3, red_processed, green_processed, blue_processed);
-    figure, imshow(segmented), title ('Hasil segmented image');
 
 end
